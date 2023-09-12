@@ -1,0 +1,23 @@
+version: "3"
+
+includes:
+  gen: gen.yml
+
+tasks:
+  tidy:
+    cmds:
+      - go mod tidy
+
+  lint:
+    deps:
+      - gen:bin
+    cmds:
+      - "[ -f ./bin/golangci-lint ] || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b bin v1.53.3"
+      - ./bin/golangci-lint run --deadline=10m
+
+  test:
+    deps:
+      - tidy
+      - lint
+    cmds:
+      - go test ./...

@@ -1,0 +1,9 @@
+version: "3"
+
+includes:
+  go: taskfiles/go.yml
+
+tasks:
+  run:
+    deps:
+      - go:test
